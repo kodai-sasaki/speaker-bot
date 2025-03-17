@@ -7,10 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "biome lint",
-    "format": "biome format",
+    "format": "biome format --write",
     "check": "biome check"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "daisyui": "^4.12.23",
     "next": "15.1.7",
     "react": "^19.0.0",
