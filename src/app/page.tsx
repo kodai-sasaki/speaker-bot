@@ -7,16 +7,16 @@ import type { Speaker } from "@/domain/speaker/types";
 import useSWR from "swr";
 
 export default function Home() {
-	const { data: speakers } = useSWR<Speaker[]>(
-		VOICEVOX_API_ENDPOINTS.SPEAKERS,
-		async (url: string) => {
-			return fetch(url).then((res) => res.json());
-		},
-	);
-	return (
-		<div className="flex justify-between">
-			<Nav speakers={speakers} />
-			<Main />
-		</div>
-	);
+  const { data: speakers } = useSWR<Speaker[]>(
+    VOICEVOX_API_ENDPOINTS.SPEAKERS,
+    async (url: string) => {
+      return fetch(url).then((res) => res.json());
+    },
+  );
+  return (
+    <div className="flex justify-between">
+      <Nav speakers={speakers} />
+      <Main />
+    </div>
+  );
 }
