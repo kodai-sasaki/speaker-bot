@@ -1,11 +1,11 @@
 {
-  "cSpell.userWords": ["voicevox"],
-  "editor.codeActionsOnSave": {
-    "quickfix.biome": "always",
-    "source.organizeImports.biome": "always"
-  },
-  "editor.defaultFormatter": "biomejs.biome",
-  "files.trimTrailingWhitespace": true,
-  "files.insertFinalNewline": true,
-  "editor.formatOnSave": true
+	"cSpell.userWords": ["voicevox", "daisyui", "biome", "biomejs"],
+	"editor.codeActionsOnSave": {
+		"quickfix.biome": "always",
+		"source.organizeImports.biome": "always"
+	},
+	"editor.defaultFormatter": "biomejs.biome",
+	"files.trimTrailingWhitespace": true,
+	"files.insertFinalNewline": true,
+	"editor.formatOnSave": true
 }
