@@ -1,7 +1,7 @@
 import { VOICEVOX_API_ENDPOINTS } from "@/domain/api/endpoints";
 import { addQueryParams } from "./url";
 
-export const speak = async (
+export const generateVoice = async (
   text: string,
   speakerId: number,
   speed?: number,

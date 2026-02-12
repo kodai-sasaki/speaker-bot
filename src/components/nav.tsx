@@ -1,18 +1,22 @@
 import { useEffect, useState, type FC } from "react";
 import type { Speaker, SpeakerStyle } from "@/domain/speaker/types";
-import { speak } from "@/services/speak";
+import { generateVoice } from "@/services/speak";
 import clsx from "clsx";
+import { useMembersStore } from "@/store/useMembersStore";
+import { useUserGroupsStore } from "@/store/useUserGroupsStore";
 
 type Props = {
   speakers?: Speaker[];
 };
 
-export const Nav: FC<Props> = (props) => {
-  const { speakers } = props;
+export const Nav: FC<Props> = ({ speakers }) => {
   const [sampleText, setSampleText] = useState("サンプルボイス");
   const [isLoadingStyleId, setIsLoadingStyleId] = useState<number | null>(null);
+  const [isLoadingUserGroup, setIsLoadingUserGroup] = useState<boolean>(false);
   const [audio, setAudio] = useState<string | null>(null);
   const [speed, setSpeed] = useState(1);
+  const { members } = useMembersStore();
+  const { userGroups, addUserGroups } = useUserGroupsStore();
   useEffect(() => {
     if (audio) {
       const audioElement = new Audio(audio);
@@ -20,12 +24,12 @@ export const Nav: FC<Props> = (props) => {
     }
   }, [audio]);
   return (
-    <nav className="border-base-200 border-r-2 min-h-screen min-w-60 rounded-box">
+    <nav className="border-base-200 border-r-2 h-screen min-w-60 rounded-box overflow-y-scroll pr-2">
       <ul className="menu">
         <li className="menu-title">MENU</li>
         <li>
           <details>
-            <summary>SPEAKERS</summary>
+            <summary>SAMPLE</summary>
             {!speakers ? (
               <span className="loading loading-dots loading-xs" />
             ) : (
@@ -51,17 +55,77 @@ export const Nav: FC<Props> = (props) => {
                     onChange={(e) => setSpeed(Number(e.target.value))}
                   />
                 </li>
-                {speakers.map(
-                  SpeakerItem(
-                    sampleText,
-                    speed,
-                    isLoadingStyleId,
-                    setIsLoadingStyleId,
-                    setAudio,
-                  ),
-                )}
+                <li className="mt-3">
+                  <ul>
+                    <li>SPEAKERS</li>
+                    {speakers.map(
+                      SpeakerItem(
+                        sampleText,
+                        speed,
+                        isLoadingStyleId,
+                        setIsLoadingStyleId,
+                        setAudio,
+                      ),
+                    )}
+                  </ul>
+                </li>
               </ul>
             )}
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>MEMBERS</summary>
+            <ul>
+              {!members ? (
+                <>no members</>
+              ) : (
+                members.map((member) => {
+                  return <li key={member.id}>{member.name}</li>;
+                })
+              )}
+            </ul>
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>USER GROUPS</summary>
+            <ul>
+              <li className="mb-4">
+                <button
+                  type="button"
+                  className="btn btn-sm btn-primary"
+                  onClick={() => {
+                    console.log(userGroups);
+                    if (isLoadingUserGroup) {
+                      return;
+                    }
+                    setIsLoadingUserGroup(true);
+                    fetch("/api/slack/usergroups")
+                      .then((data) => {
+                        return data.json();
+                      })
+                      .then((data) => {
+                        addUserGroups(data);
+                      })
+                      .finally(() => {
+                        setIsLoadingUserGroup(false);
+                      });
+                  }}
+                >
+                  {isLoadingUserGroup ? (
+                    <span className="loading loading-sm" />
+                  ) : (
+                    "sync"
+                  )}
+                </button>
+              </li>
+              {userGroups.length === 0 ? (
+                <>no data</>
+              ) : (
+                <>{userGroups.length} user groups</>
+              )}
+            </ul>
           </details>
         </li>
       </ul>
@@ -120,7 +184,7 @@ const SpeakerStyleItem =
               return;
             }
             setIsLoadingStyleId(style.id);
-            speak(sampleText, style.id, speed)
+            generateVoice(sampleText, style.id, speed)
               .then((blob) => {
                 URL.createObjectURL(blob);
                 setAudio(URL.createObjectURL(blob));
