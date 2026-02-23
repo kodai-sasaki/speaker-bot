@@ -5,16 +5,8 @@ import Image from "next/image";
 import { useReplies } from "./script";
 import { useUserGroupsStore } from "@/store/useUserGroupsStore";
 import { useMembersStore } from "@/store/useMembersStore";
-import type { Member, Message } from "@/domain/slack/types";
-
-const ANONYMOUS_MEMBER = {
-  id: "",
-  name: "Anonymous",
-  displayName: "Anonymous",
-  avatarUrl: "/circle-user-solid.svg",
-  speakerId: null,
-  isBot: false,
-};
+import type { Message, Member } from "@/domain/slack/types";
+import { ANONYMOUS_MEMBER } from "@/domain/slack/consts";
 
 export const Replies = () => {
   const { messages, url, setUrl, fetchReplies, members } = useReplies();
