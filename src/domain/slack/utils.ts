@@ -44,15 +44,16 @@ export const formatMessage = (
         return "<url>";
       case "rich_text_list":
       case "rich_text_section":
-        return element.elements.map(formatElement).join(" ");
+        return element.elements.map(formatElement).filter(Boolean).join(" ");
     }
   };
   return !message.blocks
     ? message.text
     : message.blocks
         .map((block) => {
-          return block.elements.map(formatElement).join("\n");
+          return block.elements.map(formatElement).filter(Boolean).join("\n");
         })
+        .filter(Boolean)
         .join("\n");
 };
 

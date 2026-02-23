@@ -93,29 +93,33 @@ const MessageItem = ({
     <button
       type="button"
       className={clsx(
-        "flex justify-between w-full px-8 py-2 rounded-lg text-left hover:bg-primary",
+        "flex justify-between w-full px-8 py-2 rounded-lg text-left hover:outline",
         isActive && "bg-primary",
       )}
       onClick={onClickMessage}
     >
       <div className="chat chat-start grow-1">
-        <div className="chat-image avatar">
-          <div className="w-10 rounded-full bg-white">
+        <div className="chat-image">
+          <div className="flex justify-center items-center size-16 rounded-lg bg-white overflow-hidden">
             <Image
               src={member.avatarUrl}
               alt={member.name}
-              width={40}
-              height={40}
+              width={64}
+              height={64}
+              className="object-contain"
             />
           </div>
         </div>
         <div className="chat-header">{member.displayName}</div>
-        <div className={clsx("chat-bubble whitespace-pre-wrap break-words")}>
+        <div className="chat-bubble whitespace-pre-wrap break-words">
           <div>{textMessage}</div>
         </div>
       </div>
       <div className="w-10 shrink-0 self-end">
-        {isLoading && <span className="loading loading-md" />}
+        {isLoading && <span className="loading loading-lg" />}
+        {!isLoading && isActive && (
+          <span className="loading loading-bars loading-lg" />
+        )}
       </div>
     </button>
   );

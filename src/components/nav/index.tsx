@@ -3,6 +3,7 @@ import type { FC } from "react";
 
 import { MemberList } from "./member";
 import { SampleVoiceNav } from "./sample-voice";
+import { ThemeSwitcher } from "./theme-switcher";
 import { UserGroupList } from "./usergroup";
 
 type Props = {
@@ -11,7 +12,7 @@ type Props = {
 
 export const Nav: FC<Props> = () => {
   return (
-    <nav className="border-base-200 border-r-2 h-screen min-w-60 rounded-box overflow-y-scroll pr-2">
+    <nav className="border-base-200 border-r-2 h-screen min-w-60 overflow-y-scroll pr-2">
       <ul className="menu">
         <li className="menu-title">MENU</li>
         <li>
@@ -27,6 +28,12 @@ export const Nav: FC<Props> = () => {
           <details>
             <summary>USER GROUPS</summary>
             <UserGroupList />
+          </details>
+        </li>
+        <li>
+          <details>
+            <summary>COLOR THEME</summary>
+            <ThemeSwitcher />
           </details>
         </li>
       </ul>

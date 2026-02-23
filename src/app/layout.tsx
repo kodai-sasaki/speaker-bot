@@ -17,7 +17,9 @@ export default function RootLayout({
       <body>
         <div className="flex justify-between">
           <Nav />
-          <main className="grow p-4">{children}</main>
+          <main className="grow p-4 h-screen overflow-y-scroll">
+            {children}
+          </main>
         </div>
       </body>
     </html>
