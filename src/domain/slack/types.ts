@@ -71,21 +71,14 @@ export type BaseMessage = {
   latest_reply: string;
   reply_users: UserId[];
   parent_user_id: UserId;
+  blocks: CodeBlock[];
 }> & {
     // edited
     edited: {
       user: UserId;
       ts: TS;
     };
-  } & ( // blocks
-    | {
-        is_blocked: false;
-      }
-    | {
-        is_blocked: true;
-        blocks: CodeBlock[];
-      }
-  );
+  };
 
 export type UserMessage = BaseMessage & {
   user: UserId;

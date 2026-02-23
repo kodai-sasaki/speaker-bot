@@ -1,3 +1,4 @@
+import { ANONYMOUS_MEMBER } from "./consts";
 import type {
   BotMessage,
   CodeElement,
@@ -23,7 +24,8 @@ export const formatMessage = (
   const formatElement = (element: CodeElement): string => {
     switch (element.type) {
       case "emoji":
-        return `<:${element.name}:>`;
+        // return `<:${element.name}:>`;
+        return "";
       case "text":
         return element.text;
       case "user": {
@@ -45,11 +47,19 @@ export const formatMessage = (
         return element.elements.map(formatElement).join(" ");
     }
   };
-  return !message.is_blocked
+  return !message.blocks
     ? message.text
     : message.blocks
         .map((block) => {
           return block.elements.map(formatElement).join("\n");
         })
         .join("\n");
+};
+
+export const getMemberFromMessage = (
+  message: Message,
+  members: Member[],
+): Member => {
+  const id = isUserMessage(message) ? message.user : message.bot_id;
+  return members.find((member) => member.id === id) || ANONYMOUS_MEMBER;
 };

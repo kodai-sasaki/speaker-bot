@@ -1,15 +1,33 @@
 import { ANONYMOUS_MEMBER } from "@/domain/slack/consts";
-import type { Member, Message } from "@/domain/slack/types";
+import type { Member } from "@/domain/slack/types";
 import { isUserMessage } from "@/domain/slack/utils";
 import { formatMessage } from "@/domain/slack/utils";
 import { useMembersStore } from "@/store/useMembersStore";
 import { useUserGroupsStore } from "@/store/useUserGroupsStore";
 import { clsx } from "clsx";
 import Image from "next/image";
-import { useReplies } from "./script";
+import { useReplies, useVoiceBlob } from "./script";
 
 export const Replies = () => {
-  const { messages, url, setUrl, fetchReplies, members } = useReplies();
+  const { members, addMembers } = useMembersStore();
+  const { userGroups } = useUserGroupsStore();
+  const { messages, url, setUrl, fetchReplies } = useReplies({
+    members,
+    addMembers,
+  });
+  const {
+    isLoadedTsList,
+    activeMessageTs,
+    audioUrl,
+    audioRef,
+    onEnded,
+    onClickMessage,
+  } = useVoiceBlob({
+    members,
+    userGroups,
+    messages,
+    speed: 1.5,
+  });
 
   return (
     <div>
@@ -30,6 +48,7 @@ export const Replies = () => {
         </button>
       </div>
       <div className="pt-4">
+        <audio ref={audioRef} src={audioUrl} onEnded={onEnded} />
         {messages
           .map((message) => {
             const member = members.find(
@@ -43,7 +62,14 @@ export const Replies = () => {
             };
           })
           .map(({ message, member }) => (
-            <MessageItem key={message.ts} message={message} member={member} />
+            <MessageItem
+              key={message.ts}
+              textMessage={formatMessage(message, members, userGroups)}
+              member={member}
+              isActive={activeMessageTs === message.ts}
+              isLoading={!isLoadedTsList.includes(message.ts)}
+              onClickMessage={onClickMessage(message.ts)}
+            />
           ))}
       </div>
     </div>
@@ -51,23 +77,28 @@ export const Replies = () => {
 };
 
 const MessageItem = ({
-  message,
+  textMessage,
   member,
+  isActive,
+  isLoading,
+  onClickMessage,
 }: {
-  message: Message;
+  textMessage: string;
   member: Member;
+  isActive: boolean;
+  isLoading: boolean;
+  onClickMessage: () => Promise<void>;
 }) => {
-  const { members } = useMembersStore();
-  const { userGroups } = useUserGroupsStore();
-
   return (
     <button
       type="button"
-      key={message.ts}
-      className="block w-full px-8 py-2 rounded-lg text-left hover:bg-primary"
-      onClick={async () => {}}
+      className={clsx(
+        "flex justify-between w-full px-8 py-2 rounded-lg text-left hover:bg-primary",
+        isActive && "bg-primary",
+      )}
+      onClick={onClickMessage}
     >
-      <div className="chat chat-start">
+      <div className="chat chat-start grow-1">
         <div className="chat-image avatar">
           <div className="w-10 rounded-full bg-white">
             <Image
@@ -80,8 +111,11 @@ const MessageItem = ({
         </div>
         <div className="chat-header">{member.displayName}</div>
         <div className={clsx("chat-bubble whitespace-pre-wrap break-words")}>
-          <div>{formatMessage(message, members, userGroups)}</div>
+          <div>{textMessage}</div>
         </div>
+      </div>
+      <div className="w-10 shrink-0 self-end">
+        {isLoading && <span className="loading loading-md" />}
       </div>
     </button>
   );

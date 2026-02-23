@@ -32,13 +32,6 @@ export const fetchRepliesFromSlackAPI = async (
       return response.json();
     })
     .then((data: Replies) => {
-      return data.messages.map((message): Message => {
-        return Object.hasOwn(message, "is_blocked")
-          ? message
-          : {
-              ...message,
-              is_blocked: false,
-            };
-      });
+      return data.messages;
     });
 };

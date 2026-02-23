@@ -8,6 +8,7 @@ export const SLACK_API_HEADER = {
 
 export const DEFAULT_BOT_AVATAR_URL = "/robot-solid.svg";
 export const DEFAULT_BOT_SPEAKER_ID = 89;
+export const DEFAULT_USER_SPEAKER_ID = 3;
 
 export const ANONYMOUS_MEMBER: Member = {
   id: "",
