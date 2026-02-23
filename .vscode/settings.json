@@ -1,5 +1,14 @@
 {
-  "cSpell.userWords": ["voicevox", "daisyui", "biome", "biomejs", "usergroup", "usergroups", "vercel", "turbopack"],
+  "cSpell.userWords": [
+    "voicevox",
+    "daisyui",
+    "biome",
+    "biomejs",
+    "usergroup",
+    "usergroups",
+    "vercel",
+    "turbopack"
+  ],
   "editor.codeActionsOnSave": {
     "quickfix.biome": "always",
     "source.organizeImports.biome": "always"
