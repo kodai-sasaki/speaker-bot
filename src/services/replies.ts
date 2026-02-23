@@ -1,8 +1,8 @@
 import { SLACK_API_ENDPOINTS } from "@/domain/api/endpoints";
 import { SLACK_API_HEADER } from "@/domain/slack/api";
-import type { Replies } from "@/domain/slack/types";
+import type { Message, Replies } from "@/domain/slack/types";
 
-export const getReplies = async (url: string) => {
+export const getReplies = async (url: string): Promise<Message[]> => {
   if (typeof url !== "string") {
     throw new Error(`Invalid URL: ${url}`);
   }
@@ -30,12 +30,12 @@ export const getReplies = async (url: string) => {
       return response.json();
     })
     .then((data: Replies) => {
-      return data.messages.map((message) => {
+      return data.messages.map((message):Message => {
         return Object.hasOwn(message, "is_blocked")
           ? message
           : {
               ...message,
-              is_blocked: true,
+              is_blocked: false,
             };
       });
     });
