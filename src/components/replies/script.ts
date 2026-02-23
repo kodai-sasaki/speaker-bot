@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { useMembersStore } from "@/store/useMembersStore";
-import { useUserGroupsStore } from "@/store/useUserGroupsStore";
 import type { Message } from "@/domain/slack/types";
 import { getUnregisteredMembers } from "@/services/users";
 import { responseToJson, addQueryParams } from "@/domain/api/utils";
 
-export const useMessages = () => {
+export const useReplies = () => {
   const [url, setUrl] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const { members, addMembers } = useMembersStore();
-  const { userGroups } = useUserGroupsStore();
 
-  const handle = async () => {
+  const fetchReplies = async () => {
     const apiPath = `${location.protocol}//${location.host}/api/slack/replies`;
     fetch(addQueryParams(apiPath, { url }))
       .then(responseToJson)
@@ -34,8 +32,7 @@ export const useMessages = () => {
     messages,
     url,
     setUrl,
-    handle,
+    fetchReplies,
     members,
-    userGroups,
   };
 };

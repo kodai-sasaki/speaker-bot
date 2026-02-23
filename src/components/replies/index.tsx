@@ -2,7 +2,10 @@ import { isUserMessage } from "@/domain/slack/utils";
 import { formatMessage } from "@/domain/slack/utils";
 import { clsx } from "clsx";
 import Image from "next/image";
-import { useMessages } from "./script";
+import { useReplies } from "./script";
+import { useUserGroupsStore } from "@/store/useUserGroupsStore";
+import { useMembersStore } from "@/store/useMembersStore";
+import type { Member, Message } from "@/domain/slack/types";
 
 const ANONYMOUS_MEMBER = {
   id: "",
@@ -10,10 +13,11 @@ const ANONYMOUS_MEMBER = {
   displayName: "Anonymous",
   avatarUrl: "/circle-user-solid.svg",
   speakerId: null,
+  isBot: false,
 };
 
 export const Replies = () => {
-  const { messages, url, setUrl, handle, members, userGroups } = useMessages();
+  const { messages, url, setUrl, fetchReplies, members } = useReplies();
 
   return (
     <div>
@@ -25,7 +29,11 @@ export const Replies = () => {
           value={url}
           onChange={(e) => setUrl(e.target.value)}
         />
-        <button type="button" className="btn btn-primary" onClick={handle}>
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={fetchReplies}
+        >
           submit
         </button>
       </div>
@@ -42,40 +50,47 @@ export const Replies = () => {
               member: member || ANONYMOUS_MEMBER,
             };
           })
-          .map((params) => {
-            const { message, member } = params || {};
-            return (
-              <button
-                type="button"
-                key={message.ts}
-                className="block w-full px-8 py-2 rounded-lg text-left hover:bg-primary"
-              >
-                <div className="chat chat-start">
-                  <div className="chat-image avatar">
-                    <div className="w-10 rounded-full bg-white">
-                      <Image
-                        src={member.avatarUrl}
-                        alt={member?.name || "Anonymous"}
-                        width={40}
-                        height={40}
-                      />
-                    </div>
-                  </div>
-                  <div className="chat-header">
-                    {member?.displayName || "Anonymous"}
-                  </div>
-                  <div
-                    className={clsx(
-                      "chat-bubble whitespace-pre-wrap break-words",
-                    )}
-                  >
-                    <div>{formatMessage(message, members, userGroups)}</div>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
+          .map(({ message, member }) => (
+            <MessageItem key={message.ts} message={message} member={member} />
+          ))}
       </div>
     </div>
+  );
+};
+
+const MessageItem = ({
+  message,
+  member,
+}: {
+  message: Message;
+  member: Member;
+}) => {
+  const { members } = useMembersStore();
+  const { userGroups } = useUserGroupsStore();
+
+  return (
+    <button
+      type="button"
+      key={message.ts}
+      className="block w-full px-8 py-2 rounded-lg text-left hover:bg-primary"
+      onClick={async () => {}}
+    >
+      <div className="chat chat-start">
+        <div className="chat-image avatar">
+          <div className="w-10 rounded-full bg-white">
+            <Image
+              src={member.avatarUrl}
+              alt={member.name}
+              width={40}
+              height={40}
+            />
+          </div>
+        </div>
+        <div className="chat-header">{member.displayName}</div>
+        <div className={clsx("chat-bubble whitespace-pre-wrap break-words")}>
+          <div>{formatMessage(message, members, userGroups)}</div>
+        </div>
+      </div>
+    </button>
   );
 };

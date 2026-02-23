@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { VOICEVOX_API_ENDPOINTS } from "@/domain/api/endpoints";
 import useSWR from "swr";
-import { generateVoice } from "@/services/speak";
+import { generateVoice } from "@/services/api/voicevox";
 import clsx from "clsx";
 import type { Speaker, SpeakerStyle } from "@/domain/speaker/types";
 
