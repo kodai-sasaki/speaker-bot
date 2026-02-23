@@ -1,5 +1,9 @@
 import { VOICEVOX_API_ENDPOINTS } from "@/domain/api/endpoints";
-import { addQueryParams } from "./url";
+import {
+  addQueryParams,
+  responseToJson,
+  responseToBlob,
+} from "@/domain/api/utils";
 
 export const generateVoice = async (
   text: string,
@@ -19,12 +23,7 @@ export const generateVoice = async (
     }),
     fetchOptions,
   )
-    .then(async (response) => {
-      if (!response.ok) {
-        throw new Error(`Failed to fetch: ${response.statusText}`);
-      }
-      return response.json();
-    })
+    .then(responseToJson)
     .then((query) => {
       return fetch(
         addQueryParams(VOICEVOX_API_ENDPOINTS.SYNTHESIS, {
@@ -36,8 +35,5 @@ export const generateVoice = async (
         },
       );
     })
-    .then(async (response) => {
-      if (response.ok) return response.blob();
-      throw new Error(`Fetch Error: ${response.status}`);
-    });
+    .then(responseToBlob);
 };

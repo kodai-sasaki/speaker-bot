@@ -12,13 +12,14 @@ export const fetchUsersFromSlackAPI = async (
         headers: SLACK_API_HEADER,
       })
         .then(responseToJson)
-        .then((data: { ok: boolean; user: User }) => {
+        .then((data: { ok: boolean; user: User }): Member => {
           return {
             id: data.user.id,
             name: data.user.name,
             displayName: data.user.real_name,
             avatarUrl: data.user.profile.image_48,
             speakerId: null,
+            isBot: data.user.is_bot,
           };
         })
         .catch((error) => {
@@ -27,6 +28,6 @@ export const fetchUsersFromSlackAPI = async (
         });
     }),
   ).then((users) => {
-    return users.filter((user) => user !== null) as Member[];
+    return users.filter((user) => user !== null);
   });
 };

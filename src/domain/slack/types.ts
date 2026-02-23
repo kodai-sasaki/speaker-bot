@@ -154,6 +154,7 @@ export type Member = {
   displayName: string;
   avatarUrl: string;
   speakerId: number | null;
+  isBot: boolean;
 };
 
 export type UserGroup = {
