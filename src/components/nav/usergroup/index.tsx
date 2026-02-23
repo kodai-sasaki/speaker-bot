@@ -14,7 +14,6 @@ export const UserGroupList = () => {
           type="button"
           className="btn btn-sm btn-primary"
           onClick={() => {
-            console.log(userGroups);
             if (isLoadingUserGroup) {
               return;
             }
