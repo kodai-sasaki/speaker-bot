@@ -1,7 +1,7 @@
 import "./globals.css";
 
-import type { Metadata } from "next";
 import { Nav } from "@/components/nav";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "SPEAKER BOT",

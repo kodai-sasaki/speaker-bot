@@ -1,7 +1,7 @@
-import type { Member, User } from "@/domain/slack/types";
 import { SLACK_API_ENDPOINTS } from "@/domain/api/endpoints";
-import { SLACK_API_HEADER } from "@/domain/slack/consts";
 import { responseToJson } from "@/domain/api/utils";
+import { SLACK_API_HEADER } from "@/domain/slack/consts";
+import type { Member, User } from "@/domain/slack/types";
 
 export const fetchUsersFromSlackAPI = async (
   userIdList: string[],

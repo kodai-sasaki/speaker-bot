@@ -1,10 +1,10 @@
 import type {
-  Message,
-  UserMessage,
   BotMessage,
-  Member,
   CodeElement,
+  Member,
+  Message,
   UserGroup,
+  UserMessage,
 } from "./types";
 
 export const isUserMessage = (message: Message): message is UserMessage => {

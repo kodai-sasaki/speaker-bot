@@ -1,10 +1,10 @@
-import type { BotMessage, Member, Message } from "@/domain/slack/types";
+import { addQueryParams, responseToJson } from "@/domain/api/utils";
 import {
   DEFAULT_BOT_AVATAR_URL,
   DEFAULT_BOT_SPEAKER_ID,
 } from "@/domain/slack/consts";
+import type { BotMessage, Member, Message } from "@/domain/slack/types";
 import { isBotMessage, isUserMessage } from "@/domain/slack/utils";
-import { responseToJson, addQueryParams } from "@/domain/api/utils";
 
 export const fetchUsers = async (userIdList: string[]): Promise<Member[]> => {
   return fetch(

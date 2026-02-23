@@ -1,8 +1,8 @@
 import { VOICEVOX_API_ENDPOINTS } from "@/domain/api/endpoints";
 import {
   addQueryParams,
-  responseToJson,
   responseToBlob,
+  responseToJson,
 } from "@/domain/api/utils";
 
 export const generateVoice = async (

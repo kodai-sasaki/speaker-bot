@@ -1,12 +1,12 @@
+import { ANONYMOUS_MEMBER } from "@/domain/slack/consts";
+import type { Member, Message } from "@/domain/slack/types";
 import { isUserMessage } from "@/domain/slack/utils";
 import { formatMessage } from "@/domain/slack/utils";
+import { useMembersStore } from "@/store/useMembersStore";
+import { useUserGroupsStore } from "@/store/useUserGroupsStore";
 import { clsx } from "clsx";
 import Image from "next/image";
 import { useReplies } from "./script";
-import { useUserGroupsStore } from "@/store/useUserGroupsStore";
-import { useMembersStore } from "@/store/useMembersStore";
-import type { Message, Member } from "@/domain/slack/types";
-import { ANONYMOUS_MEMBER } from "@/domain/slack/consts";
 
 export const Replies = () => {
   const { messages, url, setUrl, fetchReplies, members } = useReplies();

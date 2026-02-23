@@ -1,9 +1,9 @@
-import type { FC } from "react";
 import type { Speaker } from "@/domain/speaker/types";
+import type { FC } from "react";
 
+import { MemberList } from "./member";
 import { SampleVoiceNav } from "./sample-voice";
 import { UserGroupList } from "./usergroup";
-import { MemberList } from "./member";
 
 type Props = {
   speakers?: Speaker[];
