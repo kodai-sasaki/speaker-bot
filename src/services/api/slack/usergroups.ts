@@ -1,17 +1,13 @@
 import type { UserGroup } from "@/domain/slack/types";
 import { SLACK_API_ENDPOINTS } from "@/domain/api/endpoints";
-import { SLACK_API_HEADER } from "@/domain/slack/api";
+import { SLACK_API_HEADER } from "@/domain/slack/consts";
+import { responseToJson } from "@/domain/api/utils";
 
-export const getUserGroups = async () => {
+export const fetchUserGroupsFromSlackAPI = async () => {
   return fetch(`${SLACK_API_ENDPOINTS.USERGROUPS}`, {
     headers: SLACK_API_HEADER,
   })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(`Failed to fetch: ${response.statusText}`);
-      }
-      return response.json();
-    })
+    .then(responseToJson)
     .then(
       (data: {
         ok: boolean;

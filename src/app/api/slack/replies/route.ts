@@ -1,4 +1,4 @@
-import { getReplies } from "@/services/replies";
+import { fetchRepliesFromSlackAPI } from "@/services/api/slack/replies";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   if (url === null) {
     return NextResponse.error();
   }
-  return getReplies(url).then((data) => {
+  return fetchRepliesFromSlackAPI(url).then((data) => {
     data.map((message) => {
       return message;
     });

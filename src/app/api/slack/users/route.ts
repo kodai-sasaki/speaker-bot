@@ -1,4 +1,4 @@
-import { getUsers } from "@/services/users";
+import { fetchUsersFromSlackAPI } from "@/services/api/slack/users";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   if (!users) {
     return NextResponse.error();
   }
-  return getUsers(users).then((users) => {
+  return fetchUsersFromSlackAPI(users).then((users) => {
     return NextResponse.json(users);
   });
 }
